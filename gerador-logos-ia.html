@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Logos com IA - Área VIP</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        }
+
+        .navbar-brand, .navbar-text, .navbar-nav .nav-link, .btn-outline-light {
+            color: #ecf0f1 !important;
+        }
+
+        .btn-outline-light:hover {
+            background-color: var(--secondary-color) !important;
+            color: #ecf0f1 !important;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-area {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.08);
+            padding: 2.5rem;
+        }
+        
+        .logo-input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        #logoOutput {
+            min-height: 350px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            font-style: italic;
+            color: #777;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #logoOutput img {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        
+        .btn-primary { 
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color); 
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { 
+            background-color: var(--secondary-color); 
+            border-color: var(--secondary-color); 
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-2px);
+        }
+        
+        .alert {
+            margin-top: 1.5rem;
+            border-radius: .25rem;
+            font-weight: 500;
+        }
+
+        .alert-danger { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border-color: #f5c6cb; 
+        }
+
+        .spinner-border {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="loginvip.html">Área VIP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="loginvip.html">Voltar para a Área VIP</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Gerador de Logos com IA</h1>
+            <p class="lead text-muted">Use nossa IA para criar logos únicos e de alta qualidade para o seu servidor. Basta descrever o que você quer e deixar a magia acontecer.</p>
+        </div>
+        <div class="logo-area">
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="form-group logo-input-group">
+                        <label for="serverName">Nome do Servidor:</label>
+                        <input type="text" class="form-control" id="serverName" placeholder="Ex: Dragonia Online" required>
+                    </div>
+                    <div class="form-group logo-input-group">
+                        <label for="logoTheme">Tema/Estilo:</label>
+                        <input type="text" class="form-control" id="logoTheme" placeholder="Ex: Medieval, Fantasia, Sci-Fi" required>
+                    </div>
+                    <button id="btnGenerateLogo" class="btn btn-primary btn-block">
+                        <span id="buttonText">Gerar Logo</span>
+                        <span id="loadingSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-center text-md-left mb-3">Resultado:</h5>
+                    <div id="logoOutput" class="p-3 bg-light rounded text-center">
+                        Sua logo aparecerá aqui
+                    </div>
+                    <div id="downloadArea" class="mt-4 text-center" style="display: none;">
+                        <a href="#" id="downloadLink" class="btn btn-success" download>Baixar Logo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnGenerateLogo = document.getElementById('btnGenerateLogo');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const logoOutput = document.getElementById('logoOutput');
+            const downloadArea = document.getElementById('downloadArea');
+            const downloadLink = document.getElementById('downloadLink');
+            const serverNameInput = document.getElementById('serverName');
+            const logoThemeInput = document.getElementById('logoTheme');
+            let hasError = false;
+
+            btnGenerateLogo.addEventListener('click', async () => {
+                const serverName = serverNameInput.value.trim();
+                const logoTheme = logoThemeInput.value.trim();
+                
+                logoOutput.innerHTML = '';
+                downloadArea.style.display = 'none';
+
+                if (!serverName || !logoTheme) {
+                    logoOutput.innerHTML = `<p class="text-danger">Por favor, preencha o nome do servidor e o tema.</p>`;
+                    return;
+                }
+
+                buttonText.textContent = 'Gerando...';
+                loadingSpinner.style.display = 'inline-block';
+                btnGenerateLogo.disabled = true;
+                hasError = false;
+
+                try {
+                    const response = await fetch('/api/generate-logo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ serverName, logoTheme })
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido.' }));
+                        throw new Error(errorData.error || 'Erro na geração da logo. Tente novamente.');
+                    }
+
+                    const blob = await response.blob();
+                    const imageUrl = URL.createObjectURL(blob);
+                    
+                    logoOutput.innerHTML = `
+                        <img src="${imageUrl}" alt="Logo Gerada" class="img-fluid">
+                    `;
+                    
+                    downloadLink.href = imageUrl;
+                    downloadLink.download = `logo-${serverName.replace(/\s+/g, '-')}.png`;
+                    downloadArea.style.display = 'block';
+
+                } catch (error) {
+                    console.error('Erro:', error);
+                    let errorMessage = error.message;
+
+                    // Verifica se o erro é a mensagem personalizada do servidor
+                    if (errorMessage.includes("Geração de imagem limitada por hoje")) {
+                        logoOutput.innerHTML = `<p class="text-warning">${errorMessage}</p>`;
+                    } else {
+                        logoOutput.innerHTML = `<p class="text-danger">Ocorreu um erro ao gerar a logo. Por favor, tente novamente mais tarde.</p>`;
+                    }
+                    downloadArea.style.display = 'none';
+                    hasError = true;
+                } finally {
+                    buttonText.textContent = 'Gerar Logo';
+                    loadingSpinner.style.display = 'none';
+                    btnGenerateLogo.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
