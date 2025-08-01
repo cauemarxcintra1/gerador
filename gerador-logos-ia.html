@@ -123,6 +123,61 @@
         }
     </style>
 </head>
+
+
+<script>
+    // Sua configuração do Firebase AQUI
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoqt5gMkFyxfDKAC0S5f0on0dTLQq4hPw",
+        authDomain: "playotserver-8f7cc.firebaseapp.com",
+        projectId: "playotserver-8f7cc",
+        storageBucket: "playotserver-8f7cc.firebasestorage.app",
+        messagingSenderId: "128497891375",
+        appId: "1:128497891375:web:721047632842a86819eeda",
+        measurementId: "G-EVLDWBB85R"
+    };
+
+    // Inicializa o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Acessa o elemento do corpo (body) para escondê-lo inicialmente
+    const body = document.body;
+    body.style.display = 'none';
+
+    // Listener de autenticação para verificar o status
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            // Usuário está logado. Agora verifica se é premium.
+            db.collection('users').doc(user.uid).get().then(doc => {
+                if (doc.exists && doc.data().isPremium) {
+                    // O usuário é premium, então exibe o conteúdo da página
+                    body.style.display = 'block';
+                } else {
+                    // Usuário logado, mas não é premium. Redireciona.
+                    alert("Acesso negado. Este recurso é apenas para membros premium.");
+                    window.location.href = "loginvip.html";
+                }
+            }).catch(error => {
+                console.error("Erro ao buscar status do usuário:", error);
+                alert("Erro na verificação de segurança. Tente novamente.");
+                window.location.href = "inicio.html";
+            });
+        } else {
+            // Usuário não está logado. Redireciona para a página de login.
+            alert("Você precisa estar logado para acessar esta página.");
+            window.location.href = "inicio.html";
+        }
+    });
+</script>
+
+
+
+
+
+
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="loginvip.html">Área VIP</a>
